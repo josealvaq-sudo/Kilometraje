@@ -1,1237 +1,1427 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Control de Visitas y Kilometraje</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1e3a8a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Visitas Km" />
+  <title>Control de Visitas y Kilometraje</title>
 
-    <!-- Meta tags PWA / Pantalla de Inicio (Android e iOS) -->
-    <meta name="theme-color" content="#0f172a">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Visitas Km">
-    <meta name="application-name" content="Visitas Km">
+  <!-- Generación dinámica de ícono de auto (PNG + SVG + Web Manifest) para Pantalla de Inicio -->
+  <script>
+    (function setupCarAppIcon() {
+      function drawCarIcon(size) {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
 
-    <!-- Favicon SVG embebido (Auto moderno) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230f172a'/%3E%3Cstop offset='55%25' stop-color='%231d4ed8'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='128' height='128' rx='28' fill='url(%23bg)'/%3E%3Cpath d='M26 74 L34 52 C37 44 43 40 52 40 L76 40 C85 40 91 44 94 52 L102 74 C106 76 108 80 108 85 L108 94 C108 97 105 100 102 100 L96 100 C96 107 90 112 83 112 C76 112 70 107 70 100 L58 100 C58 107 52 112 45 112 C38 112 32 107 32 100 L26 100 C23 100 20 97 20 94 L20 85 C20 80 22 76 26 74 Z' fill='%23ffffff'/%3E%3Cpath d='M40 54 L88 54 L94 70 L34 70 Z' fill='%231e3a8a'/%3E%3Ccircle cx='35' cy='84' r='6' fill='%2338bdf8'/%3E%3Ccircle cx='93' cy='84' r='6' fill='%2338bdf8'/%3E%3Crect x='50' y='81' width='28' height='6' rx='3' fill='%23cbd5e1'/%3E%3Ccircle cx='45' cy='100' r='8' fill='%230f172a' stroke='%23ffffff' stroke-width='3'/%3E%3Ccircle cx='83' cy='100' r='8' fill='%230f172a' stroke='%23ffffff' stroke-width='3'/%3E%3C/svg%3E">
+        // Fondo degradado azul ejecutivo
+        const grad = ctx.createLinearGradient(0, 0, size, size);
+        grad.addColorStop(0, '#1e3a8a');
+        grad.addColorStop(1, '#2563eb');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, size, size);
 
-    <!-- Generador dinámico de íconos PNG (180x180, 192x192, 512x512) y Web App Manifest para Android/iOS -->
-    <script>
-        (function setupAppIconsAndManifest() {
-            function renderCarIconPNG(size) {
-                const canvas = document.createElement('canvas');
-                canvas.width = size;
-                canvas.height = size;
-                const ctx = canvas.getContext('2d');
-                const s = size / 512; // Factor de escala base 512px
+        // Escala proporcional a 512px
+        const s = size / 512;
+        ctx.save();
+        ctx.scale(s, s);
 
-                ctx.save();
-                ctx.scale(s, s);
+        // Sombra suave bajo el auto
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.35)';
+        ctx.beginPath();
+        ctx.ellipse(256, 368, 175, 18, 0, 0, Math.PI * 2);
+        ctx.fill();
 
-                // Fondo degradado azul/índigo moderno (sin bordes transparentes para iOS)
-                const grad = ctx.createLinearGradient(0, 0, 512, 512);
-                grad.addColorStop(0, '#0f172a');
-                grad.addColorStop(0.5, '#1e3a8a');
-                grad.addColorStop(1, '#2563eb');
-                ctx.fillStyle = grad;
-                ctx.fillRect(0, 0, 512, 512);
+        // Carrocería principal (perfil lateral SUV / Sedán moderno)
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.moveTo(86, 305);
+        ctx.quadraticCurveTo(82, 265, 112, 250);
+        ctx.lineTo(158, 238);
+        ctx.lineTo(205, 178);
+        ctx.quadraticCurveTo(222, 162, 250, 162);
+        ctx.lineTo(335, 162);
+        ctx.quadraticCurveTo(362, 162, 378, 182);
+        ctx.lineTo(412, 236);
+        ctx.quadraticCurveTo(436, 246, 436, 278);
+        ctx.lineTo(436, 305);
+        ctx.quadraticCurveTo(436, 322, 418, 322);
+        ctx.lineTo(104, 322);
+        ctx.quadraticCurveTo(86, 322, 86, 305);
+        ctx.closePath();
+        ctx.fill();
 
-                // Resplandor radial sutil detrás del auto
-                const glow = ctx.createRadialGradient(256, 250, 30, 256, 250, 220);
-                glow.addColorStop(0, 'rgba(96, 165, 250, 0.35)');
-                glow.addColorStop(1, 'rgba(15, 23, 42, 0)');
-                ctx.fillStyle = glow;
-                ctx.fillRect(0, 0, 512, 512);
+        // Ventanas
+        ctx.fillStyle = '#1e3a8a';
+        ctx.beginPath();
+        ctx.moveTo(182, 234);
+        ctx.lineTo(216, 188);
+        ctx.quadraticCurveTo(226, 178, 244, 178);
+        ctx.lineTo(282, 178);
+        ctx.lineTo(282, 234);
+        ctx.closePath();
+        ctx.fill();
 
-                // Línea de carretera / horizonte sutil
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
-                ctx.beginPath();
-                ctx.roundRect(72, 386, 368, 12, 6);
-                ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(298, 178);
+        ctx.lineTo(334, 178);
+        ctx.quadraticCurveTo(350, 178, 360, 190);
+        ctx.lineTo(388, 234);
+        ctx.lineTo(298, 234);
+        ctx.closePath();
+        ctx.fill();
 
-                // Sombra bajo el vehículo
-                ctx.fillStyle = 'rgba(2, 6, 23, 0.45)';
-                ctx.beginPath();
-                ctx.ellipse(256, 378, 165, 18, 0, 0, Math.PI * 2);
-                ctx.fill();
+        // Luz delantera
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        ctx.roundRect(410, 258, 22, 14, 6);
+        ctx.fill();
 
-                // Espejos laterales
-                ctx.fillStyle = '#e2e8f0';
-                ctx.beginPath();
-                ctx.roundRect(82, 222, 34, 22, 10);
-                ctx.roundRect(396, 222, 34, 22, 10);
-                ctx.fill();
+        // Luz trasera
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.roundRect(88, 260, 16, 14, 5);
+        ctx.fill();
 
-                // Carrocería principal del auto / SUV moderno
-                ctx.fillStyle = '#ffffff';
-                ctx.beginPath();
-                ctx.moveTo(106, 258);
-                ctx.lineTo(136, 174);
-                ctx.quadraticCurveTo(148, 144, 182, 144);
-                ctx.lineTo(330, 144);
-                ctx.quadraticCurveTo(364, 144, 376, 174);
-                ctx.lineTo(406, 258);
-                ctx.quadraticCurveTo(426, 268, 426, 294);
-                ctx.lineTo(426, 336);
-                ctx.quadraticCurveTo(426, 354, 408, 354);
-                ctx.lineTo(104, 354);
-                ctx.quadraticCurveTo(86, 354, 86, 336);
-                ctx.lineTo(86, 294);
-                ctx.quadraticCurveTo(86, 268, 106, 258);
-                ctx.closePath();
-                ctx.fill();
+        // Ruedas (hueco + llanta + rin)
+        [165, 355].forEach((cx) => {
+          ctx.fillStyle = '#1e3a8a';
+          ctx.beginPath();
+          ctx.arc(cx, 322, 48, 0, Math.PI * 2);
+          ctx.fill();
 
-                // Parabrisas delantero estilizado
-                const glassGrad = ctx.createLinearGradient(150, 162, 360, 246);
-                glassGrad.addColorStop(0, '#0f172a');
-                glassGrad.addColorStop(1, '#1d4ed8');
-                ctx.fillStyle = glassGrad;
-                ctx.beginPath();
-                ctx.moveTo(156, 174);
-                ctx.quadraticCurveTo(164, 162, 182, 162);
-                ctx.lineTo(330, 162);
-                ctx.quadraticCurveTo(348, 162, 356, 174);
-                ctx.lineTo(378, 240);
-                ctx.lineTo(134, 240);
-                ctx.closePath();
-                ctx.fill();
+          ctx.fillStyle = '#0f172a';
+          ctx.beginPath();
+          ctx.arc(cx, 322, 38, 0, Math.PI * 2);
+          ctx.fill();
 
-                // Reflejo diagonal en el parabrisas
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.16)';
-                ctx.beginPath();
-                ctx.moveTo(192, 162);
-                ctx.lineTo(234, 162);
-                ctx.lineTo(196, 240);
-                ctx.lineTo(154, 240);
-                ctx.closePath();
-                ctx.fill();
-
-                // Parrilla frontal oscura
-                ctx.fillStyle = '#0f172a';
-                ctx.beginPath();
-                ctx.roundRect(190, 282, 132, 34, 14);
-                ctx.fill();
-
-                // Detalle metálico en parrilla
-                ctx.strokeStyle = '#60a5fa';
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.moveTo(206, 299);
-                ctx.lineTo(306, 299);
-                ctx.stroke();
-
-                // Faros LED delanteros (izquierdo y derecho)
-                ctx.fillStyle = '#38bdf8';
-                ctx.beginPath();
-                ctx.roundRect(108, 282, 62, 24, 12);
-                ctx.roundRect(342, 282, 62, 24, 12);
-                ctx.fill();
-
-                // Punto brillante LED interior
-                ctx.fillStyle = '#ffffff';
-                ctx.beginPath();
-                ctx.arc(126, 294, 6, 0, Math.PI * 2);
-                ctx.arc(386, 294, 6, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Neumáticos inferiores
-                ctx.fillStyle = '#0f172a';
-                ctx.beginPath();
-                ctx.roundRect(112, 350, 56, 32, 12);
-                ctx.roundRect(344, 350, 56, 32, 12);
-                ctx.fill();
-
-                ctx.restore();
-                return canvas.toDataURL('image/png');
-            }
-
-            try {
-                const icon180 = renderCarIconPNG(180);
-                const icon192 = renderCarIconPNG(192);
-                const icon512 = renderCarIconPNG(512);
-
-                // Inyectar Apple Touch Icon (180x180 para iOS Safari)
-                const appleLink = document.createElement('link');
-                appleLink.rel = 'apple-touch-icon';
-                appleLink.sizes = '180x180';
-                appleLink.href = icon180;
-                document.head.appendChild(appleLink);
-
-                // Inyectar PNG Icon (512x512 para Android / Chrome)
-                const pngLink = document.createElement('link');
-                pngLink.rel = 'icon';
-                pngLink.type = 'image/png';
-                pngLink.sizes = '512x512';
-                pngLink.href = icon512;
-                document.head.appendChild(pngLink);
-
-                // Generar Web App Manifest dinámico vía Blob URL
-                const manifest = {
-                    name: 'Control de Visitas y Kilometraje',
-                    short_name: 'Visitas Km',
-                    description: 'Registro de visitas, fotografías de tablero y cálculo automático de kilometraje.',
-                    start_url: window.location.pathname || './',
-                    scope: './',
-                    display: 'standalone',
-                    orientation: 'portrait',
-                    theme_color: '#0f172a',
-                    background_color: '#f8fafc',
-                    icons: [
-                        {
-                            src: icon192,
-                            sizes: '192x192',
-                            type: 'image/png',
-                            purpose: 'any maskable'
-                        },
-                        {
-                            src: icon512,
-                            sizes: '512x512',
-                            type: 'image/png',
-                            purpose: 'any maskable'
-                        }
-                    ]
-                };
-
-                const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-                const manifestUrl = URL.createObjectURL(manifestBlob);
-                const manifestLink = document.createElement('link');
-                manifestLink.rel = 'manifest';
-                manifestLink.href = manifestUrl;
-                document.head.appendChild(manifestLink);
-            } catch (err) {
-                console.warn('No se pudo generar el manifiesto dinámico:', err);
-            }
-        })();
-    </script>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome para iconos limpios -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-blue-200">
-
-    <!-- Contenedor principal estilo App Móvil -->
-    <div class="w-full max-w-md mx-auto bg-slate-50 min-h-screen shadow-xl flex flex-col relative pb-8">
-        
-        <!-- Encabezado Fijo Superior -->
-        <header class="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white px-5 pt-6 pb-5 rounded-b-3xl shadow-md sticky top-0 z-30">
-            <div class="flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <!-- Ícono SVG de Auto coherente con el ícono de la App -->
-                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500/30 to-indigo-500/20 border border-blue-400/35 flex items-center justify-center text-blue-200 shrink-0 shadow-inner">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7" fill="none">
-                            <path d="M12 34L16.5 21.5C18 17.5 21 15.5 25.5 15.5H38.5C43 15.5 46 17.5 47.5 21.5L52 34C54.5 35.2 56 37.5 56 40.5V46C56 47.7 54.7 49 53 49H50C50 52.3 47.3 55 44 55C40.7 55 38 52.3 38 49H26C26 52.3 23.3 55 20 55C16.7 55 14 52.3 14 49H11C9.3 49 8 47.7 8 46V40.5C8 37.5 9.5 35.2 12 34Z" fill="currentColor"/>
-                            <path d="M19.5 22H44.5L47.5 31H16.5L19.5 22Z" fill="#0f172a"/>
-                            <circle cx="17" cy="39" r="3" fill="#38bdf8"/>
-                            <circle cx="47" cy="39" r="3" fill="#38bdf8"/>
-                            <rect x="25" y="37.5" width="14" height="3" rx="1.5" fill="#93c5fd"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="text-base font-bold leading-tight tracking-tight">Control de Visitas</h1>
-                        <p class="text-xs text-slate-300 font-medium">Registro y Kilometraje</p>
-                    </div>
-                </div>
-                
-                <!-- Botón / Indicador de Correo Configurado -->
-                <button id="btn-edit-email" type="button" onclick="openEmailModal()" 
-                    class="hidden items-center gap-1.5 bg-white/10 hover:bg-white/20 active:scale-95 transition-all px-3 py-2 rounded-xl border border-white/15 text-xs font-medium text-blue-100 max-w-[155px]">
-                    <i class="fa-solid fa-envelope text-blue-300 shrink-0"></i>
-                    <span id="header-email-text" class="truncate">correo@ejemplo.com</span>
-                    <i class="fa-solid fa-pen text-[10px] opacity-70 shrink-0"></i>
-                </button>
-            </div>
-        </header>
-
-        <!-- Sistema de Notificaciones Toast / Banner (Reemplazo seguro de alert) -->
-        <div id="toast-container" class="fixed top-20 left-1/2 -translate-x-1/2 w-[92%] max-w-sm z-50 pointer-events-none flex flex-col gap-2"></div>
-
-        <!-- Contenido Principal -->
-        <main class="flex-1 px-4 pt-5 space-y-5">
-
-            <!-- ========================================================= -->
-            <!-- VISTA 0: CONFIGURACIÓN INICIAL DE CORREO (PRIMERA VEZ)    -->
-            <!-- ========================================================= -->
-            <section id="view-setup-email" class="hidden bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-5">
-                <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mx-auto">
-                    <i class="fa-solid fa-envelope-circle-check"></i>
-                </div>
-                <div class="text-center space-y-1.5">
-                    <h2 class="text-xl font-bold text-slate-900">Configura tu Correo</h2>
-                    <p class="text-sm text-slate-500 leading-relaxed">
-                        Ingresa el correo electrónico donde se enviarán los reportes de kilometraje y fotografías. Solo se pide una vez.
-                    </p>
-                </div>
-
-                <form id="form-initial-email" class="space-y-4">
-                    <div>
-                        <label for="input-initial-email" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
-                            Correo de destino
-                        </label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                                <i class="fa-regular fa-envelope"></i>
-                            </span>
-                            <input type="email" id="input-initial-email" required placeholder="ejemplo@empresa.com"
-                                class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-300 rounded-2xl text-base text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition">
-                        </div>
-                    </div>
-
-                    <button type="submit" 
-                        class="w-full py-4 px-5 bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-semibold rounded-2xl shadow-lg shadow-blue-600/25 transition flex items-center justify-center gap-2 text-base">
-                        <span>Guardar y Continuar</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </form>
-            </section>
-
-            <!-- ========================================================= -->
-            <!-- VISTA 1: INICIAR VISITA (FORMULARIO DE SALIDA)            -->
-            <!-- ========================================================= -->
-            <section id="view-start-visit" class="hidden space-y-4">
-                <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80 space-y-5">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
-                        <div>
-                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full mb-1">
-                                <i class="fa-solid fa-play text-[10px]"></i> Nueva Ruta
-                            </span>
-                            <h2 class="text-lg font-bold text-slate-900">Iniciar Visita</h2>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-                            <i class="fa-solid fa-car-side"></i>
-                        </div>
-                    </div>
-
-                    <form id="form-start-visit" class="space-y-4">
-                        <!-- Razón de la visita -->
-                        <div>
-                            <label for="visit-reason" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Razón de la visita <span class="text-rose-500">*</span>
-                            </label>
-                            <textarea id="visit-reason" rows="2" required placeholder="Ej. Visita a cliente Distribuidora Central, entrega de documentos..."
-                                class="w-full p-3.5 bg-slate-50 border border-slate-300 rounded-2xl text-base text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition resize-none"></textarea>
-                        </div>
-
-                        <!-- Kilometraje Inicial -->
-                        <div>
-                            <label for="start-km" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Kilometraje inicial (km) <span class="text-rose-500">*</span>
-                            </label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                                    <i class="fa-solid fa-gauge-high"></i>
-                                </span>
-                                <input type="number" id="start-km" step="0.1" min="0" inputmode="decimal" required placeholder="Ej. 45230"
-                                    class="w-full pl-10 pr-12 py-3.5 bg-slate-50 border border-slate-300 rounded-2xl text-lg font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition">
-                                <span class="absolute inset-y-0 right-0 pr-4 flex items-center text-xs font-bold text-slate-400 uppercase">KM</span>
-                            </div>
-                        </div>
-
-                        <!-- Foto del tablero inicial -->
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Foto del tablero inicial <span class="text-rose-500">*</span>
-                            </label>
-                            
-                            <!-- Input oculto con captura de cámara trasera -->
-                            <input type="file" id="start-photo-input" accept="image/*" capture="environment" class="hidden">
-                            
-                            <!-- Botón disparador de cámara -->
-                            <button type="button" id="btn-trigger-start-photo" onclick="document.getElementById('start-photo-input').click()"
-                                class="w-full py-4 px-4 border-2 border-dashed border-slate-300 hover:border-blue-500 bg-slate-50 hover:bg-blue-50/50 rounded-2xl transition flex flex-col items-center justify-center gap-2 text-slate-600 active:scale-[0.99]">
-                                <div class="w-11 h-11 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg">
-                                    <i class="fa-solid fa-camera"></i>
-                                </div>
-                                <span class="text-sm font-semibold text-slate-700">Tomar foto del tablero</span>
-                                <span class="text-xs text-slate-400">Toca aquí para abrir la cámara o galería</span>
-                            </button>
-
-                            <!-- Vista previa de la foto inicial -->
-                            <div id="start-photo-preview-box" class="hidden mt-3 relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">
-                                <img id="start-photo-preview" src="" alt="Tablero inicial" class="w-full h-44 object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3">
-                                    <span class="text-xs font-medium text-emerald-300 flex items-center gap-1.5">
-                                        <i class="fa-solid fa-circle-check"></i> Foto lista
-                                    </span>
-                                    <button type="button" onclick="document.getElementById('start-photo-input').click()"
-                                        class="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white text-xs font-semibold px-3 py-1.5 rounded-xl transition">
-                                        <i class="fa-solid fa-rotate mr-1"></i> Cambiar foto
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Botón Iniciar Visita -->
-                        <div class="pt-2">
-                            <button type="submit" id="btn-submit-start"
-                                class="w-full py-4 px-5 bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-bold rounded-2xl shadow-lg shadow-blue-600/25 transition flex items-center justify-center gap-2.5 text-base">
-                                <i class="fa-solid fa-location-arrow"></i>
-                                <span>Iniciar Visita</span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </section>
-
-            <!-- ========================================================= -->
-            <!-- VISTA 2: VISITA ACTIVA / EN CURSO Y CIERRE                -->
-            <!-- ========================================================= -->
-            <section id="view-active-visit" class="hidden space-y-5">
-                
-                <!-- Tarjeta de Estado Activo (Persistente) -->
-                <div class="bg-white rounded-3xl p-5 shadow-sm border-2 border-emerald-500/40 space-y-4 relative overflow-hidden">
-                    <!-- Badge Pulsante -->
-                    <div class="flex items-center justify-between">
-                        <span class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide">
-                            <span class="relative flex h-2.5 w-2.5">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                            </span>
-                            Visita Activa • En Curso
-                        </span>
-                        <span id="active-start-time" class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
-                            --:--
-                        </span>
-                    </div>
-
-                    <!-- Razón de la visita -->
-                    <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-100">
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Motivo / Destino</p>
-                        <p id="active-reason-display" class="text-sm font-semibold text-slate-800 leading-snug"></p>
-                    </div>
-
-                    <!-- Resumen de Inicio: Km Inicial + Miniatura Foto Inicial -->
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-blue-50/70 rounded-2xl p-3.5 border border-blue-100 flex flex-col justify-center">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600/80">Km Inicial</span>
-                            <div class="flex items-baseline gap-1 mt-0.5">
-                                <span id="active-start-km-display" class="text-2xl font-extrabold text-slate-900">0</span>
-                                <span class="text-xs font-bold text-slate-500">km</span>
-                            </div>
-                            <span id="active-start-date" class="text-[11px] text-slate-500 mt-1"></span>
-                        </div>
-
-                        <div class="relative rounded-2xl overflow-hidden border border-slate-200 h-24 bg-slate-900 group cursor-pointer" onclick="openImageViewer('start')">
-                            <img id="active-start-photo-thumb" src="" alt="Foto inicio" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black/35 flex flex-col items-center justify-center text-white p-2 text-center">
-                                <i class="fa-solid fa-magnifying-glass-plus text-sm mb-0.5"></i>
-                                <span class="text-[10px] font-semibold uppercase tracking-wider">Foto Inicio</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta Paso 3: Cerrar Visita al Regresar -->
-                <div id="close-visit-card" class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80 space-y-4">
-                    <div class="border-b border-slate-100 pb-3">
-                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            <i class="fa-solid fa-flag-checkered text-blue-600"></i>
-                            <span>Cerrar Visita al Regresar</span>
-                        </h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Ingresa los datos finales para calcular el recorrido y enviar el correo.</p>
-                    </div>
-
-                    <div class="space-y-4">
-                        <!-- Kilometraje Final -->
-                        <div>
-                            <label for="end-km" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Kilometraje final (km) <span class="text-rose-500">*</span>
-                            </label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                                    <i class="fa-solid fa-gauge"></i>
-                                </span>
-                                <input type="number" id="end-km" step="0.1" min="0" inputmode="decimal" placeholder="Ingresa el km de llegada"
-                                    class="w-full pl-10 pr-12 py-3.5 bg-slate-50 border border-slate-300 rounded-2xl text-lg font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition">
-                                <span class="absolute inset-y-0 right-0 pr-4 flex items-center text-xs font-bold text-slate-400 uppercase">KM</span>
-                            </div>
-                            <p id="end-km-error" class="hidden text-xs font-semibold text-rose-600 mt-1.5 flex items-center gap-1">
-                                <i class="fa-solid fa-circle-exclamation"></i>
-                                <span>El kilometraje final debe ser mayor o igual al inicial.</span>
-                            </p>
-                        </div>
-
-                        <!-- Cálculo Matemático en Tiempo Real -->
-                        <div id="distance-calc-box" class="bg-gradient-to-br from-slate-900 to-blue-950 text-white rounded-2xl p-4 flex items-center justify-between shadow-inner">
-                            <div>
-                                <p class="text-xs font-medium text-blue-200">Recorrido Total Calculado</p>
-                                <p id="calc-formula-text" class="text-[11px] text-slate-400 mt-0.5">Esperando km final...</p>
-                            </div>
-                            <div class="text-right">
-                                <span id="total-distance-display" class="text-3xl font-extrabold tracking-tight text-emerald-400">0.0</span>
-                                <span class="text-sm font-bold text-emerald-200 ml-0.5">km</span>
-                            </div>
-                        </div>
-
-                        <!-- Foto del tablero final -->
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Foto del tablero final <span class="text-rose-500">*</span>
-                            </label>
-                            
-                            <input type="file" id="end-photo-input" accept="image/*" capture="environment" class="hidden">
-                            
-                            <button type="button" id="btn-trigger-end-photo" onclick="document.getElementById('end-photo-input').click()"
-                                class="w-full py-4 px-4 border-2 border-dashed border-slate-300 hover:border-emerald-500 bg-slate-50 hover:bg-emerald-50/40 rounded-2xl transition flex flex-col items-center justify-center gap-2 text-slate-600 active:scale-[0.99]">
-                                <div class="w-11 h-11 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
-                                    <i class="fa-solid fa-camera"></i>
-                                </div>
-                                <span class="text-sm font-semibold text-slate-700">Tomar foto del tablero final</span>
-                                <span class="text-xs text-slate-400">Captura el kilometraje de regreso</span>
-                            </button>
-
-                            <!-- Vista previa foto final -->
-                            <div id="end-photo-preview-box" class="hidden mt-3 relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">
-                                <img id="end-photo-preview" src="" alt="Tablero final" class="w-full h-44 object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3">
-                                    <span class="text-xs font-medium text-emerald-300 flex items-center gap-1.5">
-                                        <i class="fa-solid fa-circle-check"></i> Foto final lista
-                                    </span>
-                                    <button type="button" onclick="document.getElementById('end-photo-input').click()"
-                                        class="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white text-xs font-semibold px-3 py-1.5 rounded-xl transition">
-                                        <i class="fa-solid fa-rotate mr-1"></i> Cambiar foto
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Botones de Acción: Finalizar y Enviar Correo -->
-                        <div class="pt-2 space-y-3">
-                            <!-- Opción 1: Web Share API con las 2 fotos adjuntas -->
-                            <button type="button" id="btn-share-email" onclick="handleShareReport()"
-                                class="w-full py-4 px-5 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/25 transition flex items-center justify-center gap-2.5 text-base">
-                                <i class="fa-solid fa-paper-plane"></i>
-                                <span>Compartir / Enviar por Correo (con fotos)</span>
-                            </button>
-
-                            <!-- Opción 2: Respaldo mailto + Descarga de fotos -->
-                            <button type="button" id="btn-mailto-fallback" onclick="handleMailtoFallback()"
-                                class="w-full py-3.5 px-4 bg-slate-100 hover:bg-slate-200 active:scale-[0.99] text-slate-700 font-semibold rounded-2xl border border-slate-300/80 transition flex items-center justify-center gap-2 text-sm">
-                                <i class="fa-solid fa-envelope-open-text text-blue-600"></i>
-                                <span>Abrir cliente de correo (mailto) + Descargar fotos</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sección para archivar/limpiar visita e iniciar una nueva -->
-                <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200/80 flex flex-col gap-2">
-                    <button type="button" id="btn-new-visit-prompt" onclick="toggleConfirmReset(true)"
-                        class="w-full py-3 px-4 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-box-archive text-slate-400"></i>
-                        <span>Finalizar / Archivar e Iniciar Nueva Visita</span>
-                    </button>
-
-                    <!-- Confirmación inline (sin usar window.confirm) -->
-                    <div id="confirm-reset-box" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-3.5 space-y-3">
-                        <p class="text-xs text-amber-900 font-medium leading-relaxed">
-                            ¿Confirmas que ya enviaste el reporte y deseas cerrar esta visita para registrar una nueva?
-                        </p>
-                        <div class="flex gap-2">
-                            <button type="button" onclick="toggleConfirmReset(false)"
-                                class="flex-1 py-2.5 px-3 bg-white border border-slate-300 text-slate-700 text-xs font-bold rounded-xl">
-                                Cancelar
-                            </button>
-                            <button type="button" onclick="archiveAndResetVisit()"
-                                class="flex-1 py-2.5 px-3 bg-amber-600 text-white text-xs font-bold rounded-xl shadow-sm">
-                                Sí, Nueva Visita
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
-
-        </main>
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- MODAL PARA EDITAR CORREO GUARDADO                         -->
-    <!-- ========================================================= -->
-    <div id="modal-edit-email" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4 animate-[fadeIn_0.2s_ease-out]">
-            <div class="flex items-center justify-between">
-                <h3 class="text-lg font-bold text-slate-900">Correo de Destino</h3>
-                <button type="button" onclick="closeEmailModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <p class="text-xs text-slate-500">
-                Este correo se usará automáticamente al enviar los reportes de kilometraje.
-            </p>
-            <form id="form-modal-email" class="space-y-4">
-                <input type="email" id="input-modal-email" required placeholder="correo@empresa.com"
-                    class="w-full px-4 py-3.5 bg-slate-50 border border-slate-300 rounded-2xl text-base text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                <div class="flex gap-2.5">
-                    <button type="button" onclick="closeEmailModal()" class="flex-1 py-3.5 bg-slate-100 text-slate-700 font-semibold rounded-2xl text-sm">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="flex-1 py-3.5 bg-blue-600 text-white font-semibold rounded-2xl text-sm shadow-md shadow-blue-600/20">
-                        Actualizar
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- MODAL VISOR DE FOTOGRAFÍA EN GRANDE                       -->
-    <!-- ========================================================= -->
-    <div id="modal-image-viewer" class="hidden fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4" onclick="closeImageViewer()">
-        <div class="w-full max-w-md flex justify-between items-center text-white mb-3">
-            <span id="viewer-title" class="text-sm font-bold">Foto del Tablero</span>
-            <button type="button" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-        <img id="viewer-img" src="" alt="Vista ampliada" class="max-h-[75vh] w-auto rounded-2xl object-contain border border-white/20">
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- LÓGICA DE LA APLICACIÓN (JAVASCRIPT)                      -->
-    <!-- ========================================================= -->
-    <script>
-        // Claves de almacenamiento persistente en localStorage
-        const STORAGE_KEYS = {
-            EMAIL: 'cv_saved_email_v1',
-            ACTIVE_VISIT: 'cv_active_visit_v1',
-            HISTORY: 'cv_visit_history_v1'
-        };
-
-        // Estado temporal en memoria para formularios
-        let tempStartPhotoBase64 = null;
-        let tempEndPhotoBase64 = null;
-
-        // Inicialización al cargar la página
-        document.addEventListener('DOMContentLoaded', () => {
-            initApp();
-            setupEventListeners();
+          ctx.fillStyle = '#e2e8f0';
+          ctx.beginPath();
+          ctx.arc(cx, 322, 18, 0, Math.PI * 2);
+          ctx.fill();
         });
 
-        /**
-         * Determina qué vista mostrar según el correo guardado y si existe una visita activa
-         */
-        function initApp() {
-            const savedEmail = localStorage.getItem(STORAGE_KEYS.EMAIL);
-            const activeVisitRaw = localStorage.getItem(STORAGE_KEYS.ACTIVE_VISIT);
+        ctx.restore();
+        return canvas.toDataURL('image/png');
+      }
 
-            updateHeaderEmailUI(savedEmail);
+      const icon180 = drawCarIcon(180);
+      const icon192 = drawCarIcon(192);
+      const icon512 = drawCarIcon(512);
 
-            if (!savedEmail) {
-                showView('view-setup-email');
-                return;
-            }
+      const appleIcon = document.createElement('link');
+      appleIcon.rel = 'apple-touch-icon';
+      appleIcon.sizes = '180x180';
+      appleIcon.href = icon180;
+      document.head.appendChild(appleIcon);
 
-            if (activeVisitRaw) {
-                try {
-                    const activeVisit = JSON.parse(activeVisitRaw);
-                    renderActiveVisit(activeVisit);
-                    showView('view-active-visit');
-                } catch (e) {
-                    console.error('Error leyendo visita activa:', e);
-                    localStorage.removeItem(STORAGE_KEYS.ACTIVE_VISIT);
-                    showView('view-start-visit');
-                }
-            } else {
-                showView('view-start-visit');
-            }
+      const favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      favicon.type = 'image/png';
+      favicon.href = icon192;
+      document.head.appendChild(favicon);
+
+      const manifest = {
+        name: 'Control de Visitas y Kilometraje',
+        short_name: 'Visitas Km',
+        start_url: './',
+        display: 'standalone',
+        background_color: '#f1f5f9',
+        theme_color: '#1e3a8a',
+        icons: [
+          { src: icon192, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+          { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+        ]
+      };
+      const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+      const manifestLink = document.createElement('link');
+      manifestLink.rel = 'manifest';
+      manifestLink.href = URL.createObjectURL(manifestBlob);
+      document.head.appendChild(manifestLink);
+    })();
+  </script>
+
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #2563eb;
+      --accent: #0d9488;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 84px;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #fff;
+      padding: 16px 18px 20px;
+      border-bottom-left-radius: 22px;
+      border-bottom-right-radius: 22px;
+      box-shadow: 0 4px 14px rgba(30, 58, 138, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      font-size: 1.05rem;
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand span {
+      font-size: 0.75rem;
+      opacity: 0.85;
+      display: block;
+    }
+
+    .email-pill {
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.82rem;
+    }
+
+    .email-pill-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .email-pill button {
+      background: #fff;
+      color: var(--primary);
+      border: none;
+      border-radius: 7px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Container */
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-active {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .badge-done {
+      background: #ccfbf1;
+      color: #0f766e;
+      border: 1px solid #99f6e4;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      color: var(--text);
+      background: #f8fafc;
+      transition: border-color 0.2s, background 0.2s;
+      font-family: inherit;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      background: #fff;
+    }
+
+    /* Photo capture box */
+    .photo-box {
+      border: 2px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      background: #f8fafc;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-box.has-photo {
+      border-style: solid;
+      border-color: var(--accent);
+      padding: 8px;
+      background: #f0fdfa;
+    }
+
+    .photo-box input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    .photo-preview {
+      width: 100%;
+      max-height: 210px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .photo-change-hint {
+      font-size: 0.75rem;
+      color: #0f766e;
+      font-weight: 600;
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 13px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #0f766e, var(--accent));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-danger-text {
+      background: transparent;
+      color: var(--danger);
+      font-size: 0.85rem;
+      padding: 10px;
+      margin-top: 6px;
+    }
+
+    /* Summary box */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stat-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-top: 2px;
+    }
+
+    .calc-banner {
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 13px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .calc-banner span {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1e40af;
+    }
+
+    .calc-banner strong {
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+
+    .thumb-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .thumb-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+
+    .thumb-card img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .thumb-card div {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 5px 8px;
+      color: #475569;
+      text-align: center;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+      z-index: 30;
+      box-shadow: 0 -2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .nav-btn {
+      flex: 1;
+      max-width: 180px;
+      background: transparent;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 10px;
+    }
+
+    .nav-btn.active {
+      color: var(--primary-light);
+      background: #eff6ff;
+    }
+
+    /* History list */
+    .history-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .history-item:active {
+      border-color: var(--primary-light);
+    }
+
+    .history-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .history-reason {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .history-km {
+      background: #eff6ff;
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 3px 9px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .history-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 440px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: 0 20px 35px rgba(15, 23, 42, 0.25);
+    }
+
+    .modal h2 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+
+    .modal p {
+      margin: 0 0 14px;
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 82px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #0f172a;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 60;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+            <circle cx="7" cy="17" r="2"/>
+            <path d="M9 17h6"/>
+            <circle cx="17" cy="17" r="2"/>
+          </svg>
+        </div>
+        <div>
+          <h1>Control de Visitas</h1>
+          <span>Bitácora de Kilometraje</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="email-pill">
+      <div class="email-pill-text">
+        <strong>Enviar a:</strong> <span id="headerEmailDisplay">Sin configurar</span>
+      </div>
+      <button type="button" id="btnEditEmail">Cambiar</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- VISTA 1: VISITA ACTUAL -->
+    <section id="viewVisit">
+      <!-- Estado A: Iniciar nueva visita -->
+      <div id="cardStartVisit" class="card">
+        <div class="card-title">
+          <span>Nueva Visita</span>
+          <span class="badge" style="background:#e2e8f0;color:#475569;">Lista para iniciar</span>
+        </div>
+
+        <form id="formStart">
+          <div class="form-group">
+            <label for="inputReason">Razón de la visita</label>
+            <input type="text" id="inputReason" placeholder="Ej. Visita técnica cliente / Reunión..." required />
+          </div>
+
+          <div class="form-group">
+            <label for="inputStartKm">Kilometraje inicial (km)</label>
+            <input type="number" id="inputStartKm" inputmode="decimal" step="0.1" min="0" placeholder="Ej. 45230" required />
+          </div>
+
+          <div class="form-group">
+            <label>Foto del tablero al iniciar</label>
+            <div class="photo-box" id="startPhotoBox">
+              <input type="file" id="inputStartPhoto" accept="image/*" capture="environment" required />
+              <div class="photo-placeholder" id="startPhotoPlaceholder">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+                <span>Toca para tomar foto del tablero inicial</span>
+              </div>
+              <img id="startPhotoPreview" class="photo-preview hidden" alt="Tablero inicial" />
+              <span id="startPhotoHint" class="photo-change-hint hidden">Toca la imagen para reemplazarla</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="btnStartSubmit">
+            Iniciar Visita
+          </button>
+        </form>
+      </div>
+
+      <!-- Estado B: Visita en curso (esperando cierre) -->
+      <div id="cardActiveVisit" class="card hidden">
+        <div class="card-title">
+          <span>Visita en Curso</span>
+          <span class="badge badge-active">Activa</span>
+        </div>
+
+        <div class="summary-grid">
+          <div class="stat-box" style="grid-column: span 2;">
+            <div class="stat-label">Razón de la visita</div>
+            <div class="stat-value" id="activeReason" style="font-size:0.98rem;">—</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Km Inicial</div>
+            <div class="stat-value" id="activeStartKm">—</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Hora de inicio</div>
+            <div class="stat-value" id="activeStartTime" style="font-size:0.9rem;">—</div>
+          </div>
+        </div>
+
+        <div class="thumb-card" style="margin-bottom: 16px;">
+          <img id="activeStartImg" alt="Foto tablero inicial" />
+          <div>Evidencia de kilometraje inicial</div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;" />
+
+        <form id="formEnd">
+          <div class="form-group">
+            <label for="inputEndKm">Kilometraje final al regresar (km)</label>
+            <input type="number" id="inputEndKm" inputmode="decimal" step="0.1" min="0" placeholder="Ingresa el km final" required />
+          </div>
+
+          <div class="calc-banner">
+            <span>Recorrido calculado:</span>
+            <strong id="liveDistance">0.0 km</strong>
+          </div>
+
+          <div class="form-group">
+            <label>Foto del tablero al finalizar</label>
+            <div class="photo-box" id="endPhotoBox">
+              <input type="file" id="inputEndPhoto" accept="image/*" capture="environment" required />
+              <div class="photo-placeholder" id="endPhotoPlaceholder">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+                <span>Toca para tomar foto del tablero final</span>
+              </div>
+              <img id="endPhotoPreview" class="photo-preview hidden" alt="Tablero final" />
+              <span id="endPhotoHint" class="photo-change-hint hidden">Toca la imagen para reemplazarla</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success" id="btnEndSubmit">
+            Cerrar Visita y Compartir
+          </button>
+          <button type="button" class="btn btn-danger-text" id="btnCancelVisit">
+            Cancelar visita activa
+          </button>
+        </form>
+      </div>
+
+      <!-- Estado C: Resumen de visita recién cerrada -->
+      <div id="cardCompletedVisit" class="card hidden">
+        <div class="card-title">
+          <span>Visita Finalizada</span>
+          <span class="badge badge-done">Completada</span>
+        </div>
+
+        <div class="calc-banner">
+          <span>Total Recorrido:</span>
+          <strong id="doneDistance">0.0 km</strong>
+        </div>
+
+        <div class="summary-grid">
+          <div class="stat-box" style="grid-column: span 2;">
+            <div class="stat-label">Razón</div>
+            <div class="stat-value" id="doneReason" style="font-size:0.95rem;">—</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Km Inicial</div>
+            <div class="stat-value" id="doneStartKm">—</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Km Final</div>
+            <div class="stat-value" id="doneEndKm">—</div>
+          </div>
+        </div>
+
+        <div class="thumb-pair">
+          <div class="thumb-card">
+            <img id="doneStartImg" alt="Foto inicial" />
+            <div>Tablero Inicial</div>
+          </div>
+          <div class="thumb-card">
+            <img id="doneEndImg" alt="Foto final" />
+            <div>Tablero Final</div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-success" id="btnShareCompleted" style="margin-bottom: 10px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Compartir reporte con las 2 fotos
+        </button>
+
+        <button type="button" class="btn btn-outline" id="btnNewAfterDone">
+          Registrar otra visita
+        </button>
+      </div>
+    </section>
+
+    <!-- VISTA 2: HISTORIAL DE RECORRIDOS -->
+    <section id="viewHistory" class="hidden">
+      <div class="card">
+        <div class="card-title">
+          <span>Resumen Acumulado</span>
+          <button type="button" id="btnExportCsv" style="background:#eff6ff;color:var(--primary);border:none;padding:6px 10px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;">
+            Exportar CSV
+          </button>
+        </div>
+        <div class="summary-grid" style="margin-bottom:0;">
+          <div class="stat-box">
+            <div class="stat-label">Visitas</div>
+            <div class="stat-value" id="histTotalCount">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Kilómetros Totales</div>
+            <div class="stat-value" id="histTotalKm" style="color:var(--primary);">0.0 km</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="historyList"></div>
+    </section>
+  </main>
+
+  <!-- Navegación inferior -->
+  <nav class="bottom-nav">
+    <button type="button" class="nav-btn active" id="navVisit">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      <span>Visita</span>
+    </button>
+    <button type="button" class="nav-btn" id="navHistory">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span>Historial</span>
+    </button>
+  </nav>
+
+  <!-- Modal: Configuración única de correo destino -->
+  <div class="modal-backdrop" id="emailModal">
+    <div class="modal">
+      <h2>Correo Destino del Reporte</h2>
+      <p>Ingresa el correo electrónico al que deseas enviar tus reportes de kilometraje y fotografías. Solo se pide una vez.</p>
+      <form id="formEmail">
+        <div class="form-group">
+          <label for="inputTargetEmail">Correo electrónico destino</label>
+          <input type="email" id="inputTargetEmail" placeholder="ejemplo@empresa.com" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar correo</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Detalle de historial -->
+  <div class="modal-backdrop" id="detailModal">
+    <div class="modal">
+      <div class="card-title">
+        <span>Detalle del Recorrido</span>
+        <button type="button" id="btnCloseDetail" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--muted);">&times;</button>
+      </div>
+      <div class="calc-banner">
+        <span>Recorrido Neto:</span>
+        <strong id="detDistance">0.0 km</strong>
+      </div>
+      <div class="summary-grid">
+        <div class="stat-box" style="grid-column: span 2;">
+          <div class="stat-label">Razón</div>
+          <div class="stat-value" id="detReason" style="font-size:0.95rem;">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Km Inicial</div>
+          <div class="stat-value" id="detStartKm">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Km Final</div>
+          <div class="stat-value" id="detEndKm">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Inicio</div>
+          <div class="stat-value" id="detStartTime" style="font-size:0.8rem;">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Cierre</div>
+          <div class="stat-value" id="detEndTime" style="font-size:0.8rem;">—</div>
+        </div>
+      </div>
+      <div class="thumb-pair">
+        <div class="thumb-card">
+          <img id="detStartImg" alt="Foto inicial" />
+          <div>Tablero Inicial</div>
+        </div>
+        <div class="thumb-card">
+          <img id="detEndImg" alt="Foto final" />
+          <div>Tablero Final</div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-success" id="btnShareHistoryItem" style="margin-bottom:8px;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        Compartir reporte con las 2 fotos
+      </button>
+      <button type="button" class="btn btn-danger-text" id="btnDeleteHistoryItem">
+        Eliminar este registro
+      </button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEYS = {
+      EMAIL: 'km_tracker_target_email_v1',
+      ACTIVE: 'km_tracker_active_visit_v1',
+      HISTORY: 'km_tracker_history_v1'
+    };
+
+    let tempStartPhoto = null;
+    let tempEndPhoto = null;
+    let lastCompletedRecord = null;
+    let selectedHistoryId = null;
+
+    // Utilidades
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2800);
+    }
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleString('es-CR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    function compressImage(file, maxWidth = 1024, quality = 0.72) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const scale = Math.min(1, maxWidth / Math.max(img.width, img.height));
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function dataUrlToFile(dataUrl, filename) {
+      const arr = dataUrl.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) u8arr[n] = bstr.charCodeAt(n);
+      return new File([u8arr], filename, { type: mime });
+    }
+
+    // Gestión de Correo Destino
+    function getTargetEmail() {
+      return localStorage.getItem(STORAGE_KEYS.EMAIL) || '';
+    }
+
+    function updateEmailUI() {
+      const email = getTargetEmail();
+      document.getElementById('headerEmailDisplay').textContent = email || 'Sin configurar';
+      if (!email) {
+        document.getElementById('emailModal').classList.add('open');
+      }
+    }
+
+    document.getElementById('btnEditEmail').addEventListener('click', () => {
+      document.getElementById('inputTargetEmail').value = getTargetEmail();
+      document.getElementById('emailModal').classList.add('open');
+    });
+
+    document.getElementById('formEmail').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = document.getElementById('inputTargetEmail').value.trim();
+      if (!val) return;
+      localStorage.setItem(STORAGE_KEYS.EMAIL, val);
+      document.getElementById('emailModal').classList.remove('open');
+      updateEmailUI();
+      showToast('Correo guardado correctamente');
+    });
+
+    // Gestión de Fotos
+    document.getElementById('inputStartPhoto').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      tempStartPhoto = await compressImage(file);
+      const preview = document.getElementById('startPhotoPreview');
+      preview.src = tempStartPhoto;
+      preview.classList.remove('hidden');
+      document.getElementById('startPhotoPlaceholder').classList.add('hidden');
+      document.getElementById('startPhotoHint').classList.remove('hidden');
+      document.getElementById('startPhotoBox').classList.add('has-photo');
+    });
+
+    document.getElementById('inputEndPhoto').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      tempEndPhoto = await compressImage(file);
+      const preview = document.getElementById('endPhotoPreview');
+      preview.src = tempEndPhoto;
+      preview.classList.remove('hidden');
+      document.getElementById('endPhotoPlaceholder').classList.add('hidden');
+      document.getElementById('endPhotoHint').classList.remove('hidden');
+      document.getElementById('endPhotoBox').classList.add('has-photo');
+    });
+
+    // Cálculo en tiempo real
+    document.getElementById('inputEndKm').addEventListener('input', () => {
+      const active = JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIVE) || 'null');
+      if (!active) return;
+      const endVal = parseFloat(document.getElementById('inputEndKm').value);
+      const diff = !isNaN(endVal) ? (endVal - active.startKm) : 0;
+      const display = document.getElementById('liveDistance');
+      if (diff < 0) {
+        display.textContent = 'Menor al inicial';
+        display.style.color = 'var(--danger)';
+      } else {
+        display.textContent = `${diff.toFixed(1)} km`;
+        display.style.color = 'var(--primary)';
+      }
+    });
+
+    // Iniciar visita
+    document.getElementById('formStart').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!getTargetEmail()) {
+        document.getElementById('emailModal').classList.add('open');
+        return;
+      }
+      const reason = document.getElementById('inputReason').value.trim();
+      const startKm = parseFloat(document.getElementById('inputStartKm').value);
+
+      if (!reason || isNaN(startKm) || !tempStartPhoto) {
+        showToast('Completa todos los campos y la foto inicial');
+        return;
+      }
+
+      const activeVisit = {
+        id: Date.now().toString(),
+        reason,
+        startKm,
+        startTime: new Date().toISOString(),
+        startPhoto: tempStartPhoto
+      };
+
+      try {
+        localStorage.setItem(STORAGE_KEYS.ACTIVE, JSON.stringify(activeVisit));
+      } catch (err) {
+        alert('Memoria llena en el navegador. Elimina registros antiguos del historial.');
+        return;
+      }
+
+      tempStartPhoto = null;
+      document.getElementById('formStart').reset();
+      resetPhotoBox('start');
+      renderVisitState();
+      showToast('Visita iniciada y guardada');
+    });
+
+    // Cerrar visita
+    document.getElementById('formEnd').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const active = JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIVE) || 'null');
+      if (!active) return;
+
+      const endKm = parseFloat(document.getElementById('inputEndKm').value);
+      if (isNaN(endKm) || endKm < active.startKm) {
+        showToast('El kilometraje final debe ser mayor o igual al inicial');
+        return;
+      }
+      if (!tempEndPhoto) {
+        showToast('Toma la foto del tablero final');
+        return;
+      }
+
+      const distance = Number((endKm - active.startKm).toFixed(1));
+      const completed = {
+        ...active,
+        endKm,
+        distance,
+        endTime: new Date().toISOString(),
+        endPhoto: tempEndPhoto,
+        targetEmail: getTargetEmail()
+      };
+
+      const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+      history.unshift(completed);
+
+      try {
+        localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+      } catch (err) {
+        // Si el historial supera cuota, conservar últimos 20
+        history.splice(20);
+        localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+      }
+
+      localStorage.removeItem(STORAGE_KEYS.ACTIVE);
+      lastCompletedRecord = completed;
+      tempEndPhoto = null;
+      document.getElementById('formEnd').reset();
+      resetPhotoBox('end');
+      renderVisitState();
+
+      // Disparar compartir inmediatamente
+      await shareVisitReport(completed);
+    });
+
+    document.getElementById('btnCancelVisit').addEventListener('click', () => {
+      if (confirm('¿Seguro que deseas cancelar y descartar esta visita activa?')) {
+        localStorage.removeItem(STORAGE_KEYS.ACTIVE);
+        tempEndPhoto = null;
+        document.getElementById('formEnd').reset();
+        resetPhotoBox('end');
+        renderVisitState();
+        showToast('Visita cancelada');
+      }
+    });
+
+    document.getElementById('btnNewAfterDone').addEventListener('click', () => {
+      lastCompletedRecord = null;
+      renderVisitState();
+    });
+
+    document.getElementById('btnShareCompleted').addEventListener('click', () => {
+      if (lastCompletedRecord) shareVisitReport(lastCompletedRecord);
+    });
+
+    // Función única de Compartir (texto + 2 fotografías)
+    async function shareVisitReport(record) {
+      const targetEmail = getTargetEmail() || record.targetEmail || '';
+      const subject = `Reporte de Kilometraje - ${record.reason} (${record.distance} km)`;
+      const body = [
+        `Enviar a: ${targetEmail}`,
+        `Razón de visita: ${record.reason}`,
+        `Fecha inicio: ${formatDate(record.startTime)}`,
+        `Fecha cierre: ${formatDate(record.endTime)}`,
+        `Kilometraje inicial: ${record.startKm} km`,
+        `Kilometraje final: ${record.endKm} km`,
+        `Recorrido total: ${record.distance} km`
+      ].join('\n');
+
+      const file1 = dataUrlToFile(record.startPhoto, `tablero_inicial_${record.startKm}km.jpg`);
+      const file2 = dataUrlToFile(record.endPhoto, `tablero_final_${record.endKm}km.jpg`);
+
+      if (navigator.canShare && navigator.canShare({ files: [file1, file2] })) {
+        try {
+          await navigator.share({
+            title: subject,
+            text: body,
+            files: [file1, file2]
+          });
+          return;
+        } catch (err) {
+          if (err.name === 'AbortError') return;
         }
+      }
 
-        /**
-         * Controla la visibilidad de las vistas principales
-         */
-        function showView(viewId) {
-            ['view-setup-email', 'view-start-visit', 'view-active-visit'].forEach(id => {
-                const el = document.getElementById(id);
-                if (id === viewId) {
-                    el.classList.remove('hidden');
-                } else {
-                    el.classList.add('hidden');
-                }
-            });
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Fallback si el navegador no permite compartir archivos directamente
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: subject, text: body });
+          return;
+        } catch (err) {
+          if (err.name === 'AbortError') return;
         }
-
-        /**
-         * Actualiza el botón del correo en el encabezado
-         */
-        function updateHeaderEmailUI(email) {
-            const btn = document.getElementById('btn-edit-email');
-            const text = document.getElementById('header-email-text');
-            if (email) {
-                text.textContent = email;
-                btn.classList.remove('hidden');
-                btn.classList.add('flex');
-            } else {
-                btn.classList.add('hidden');
-                btn.classList.remove('flex');
-            }
-        }
-
-        /**
-         * Configura los listeners de formularios, cámaras y cálculo en tiempo real
-         */
-        function setupEventListeners() {
-            // 1. Guardar correo inicial
-            document.getElementById('form-initial-email').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const emailInput = document.getElementById('input-initial-email').value.trim();
-                if (!validateEmail(emailInput)) {
-                    showToast('Por favor ingresa un correo electrónico válido.', 'error');
-                    return;
-                }
-                localStorage.setItem(STORAGE_KEYS.EMAIL, emailInput);
-                updateHeaderEmailUI(emailInput);
-                showToast('Correo guardado correctamente.', 'success');
-                initApp();
-            });
-
-            // 2. Actualizar correo desde el modal
-            document.getElementById('form-modal-email').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const emailInput = document.getElementById('input-modal-email').value.trim();
-                if (!validateEmail(emailInput)) {
-                    showToast('Por favor ingresa un correo electrónico válido.', 'error');
-                    return;
-                }
-                localStorage.setItem(STORAGE_KEYS.EMAIL, emailInput);
-                updateHeaderEmailUI(emailInput);
-                closeEmailModal();
-                showToast('Correo actualizado.', 'success');
-            });
-
-            // 3. Captura y compresión de foto inicial
-            document.getElementById('start-photo-input').addEventListener('change', async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                try {
-                    showToast('Procesando fotografía...', 'info');
-                    tempStartPhotoBase64 = await compressImageToBase64(file, 1024, 0.72);
-                    document.getElementById('start-photo-preview').src = tempStartPhotoBase64;
-                    document.getElementById('start-photo-preview-box').classList.remove('hidden');
-                    document.getElementById('btn-trigger-start-photo').classList.add('hidden');
-                    showToast('Foto del tablero inicial cargada.', 'success');
-                } catch (err) {
-                    console.error(err);
-                    showToast('No se pudo procesar la imagen. Intenta de nuevo.', 'error');
-                }
-            });
-
-            // 4. Iniciar Visita (Guardar en localStorage)
-            document.getElementById('form-start-visit').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const reason = document.getElementById('visit-reason').value.trim();
-                const startKm = parseFloat(document.getElementById('start-km').value);
-
-                if (!reason) {
-                    showToast('Escribe la razón de la visita.', 'error');
-                    return;
-                }
-                if (isNaN(startKm) || startKm < 0) {
-                    showToast('Ingresa un kilometraje inicial válido.', 'error');
-                    return;
-                }
-                if (!tempStartPhotoBase64) {
-                    showToast('Debes tomar o subir la foto del tablero inicial.', 'error');
-                    return;
-                }
-
-                const now = new Date();
-                const visitData = {
-                    id: 'VIS-' + Date.now(),
-                    reason: reason,
-                    startKm: startKm,
-                    startPhoto: tempStartPhotoBase64,
-                    startTimestamp: now.toISOString(),
-                    startDateFormatted: formatDate(now),
-                    startTimeFormatted: formatTime(now),
-                    endKm: null,
-                    endPhoto: null
-                };
-
-                try {
-                    localStorage.setItem(STORAGE_KEYS.ACTIVE_VISIT, JSON.stringify(visitData));
-                    // Limpiar formulario de inicio
-                    document.getElementById('form-start-visit').reset();
-                    tempStartPhotoBase64 = null;
-                    document.getElementById('start-photo-preview-box').classList.add('hidden');
-                    document.getElementById('btn-trigger-start-photo').classList.remove('hidden');
-
-                    renderActiveVisit(visitData);
-                    showView('view-active-visit');
-                    showToast('¡Visita iniciada! Queda activa hasta tu regreso.', 'success');
-                } catch (storageErr) {
-                    console.error(storageErr);
-                    showToast('Memoria llena en el navegador. Intenta con una foto más ligera.', 'error');
-                }
-            });
-
-            // 5. Cálculo automático en tiempo real del kilometraje final
-            document.getElementById('end-km').addEventListener('input', () => {
-                calculateDistanceLive();
-            });
-
-            // 6. Captura y compresión de foto final
-            document.getElementById('end-photo-input').addEventListener('change', async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                try {
-                    showToast('Procesando foto final...', 'info');
-                    tempEndPhotoBase64 = await compressImageToBase64(file, 1024, 0.72);
-                    
-                    // También persistimos en localStorage para que no se pierda si recarga antes de enviar
-                    const activeVisit = getActiveVisit();
-                    if (activeVisit) {
-                        activeVisit.endPhoto = tempEndPhotoBase64;
-                        localStorage.setItem(STORAGE_KEYS.ACTIVE_VISIT, JSON.stringify(activeVisit));
-                    }
-
-                    document.getElementById('end-photo-preview').src = tempEndPhotoBase64;
-                    document.getElementById('end-photo-preview-box').classList.remove('hidden');
-                    document.getElementById('btn-trigger-end-photo').classList.add('hidden');
-                    showToast('Foto del tablero final lista.', 'success');
-                } catch (err) {
-                    console.error(err);
-                    showToast('Error al procesar la foto final.', 'error');
-                }
-            });
-        }
-
-        /**
-         * Rellena la vista de Visita Activa con los datos persistidos en localStorage
-         */
-        function renderActiveVisit(visit) {
-            document.getElementById('active-reason-display').textContent = visit.reason;
-            document.getElementById('active-start-km-display').textContent = visit.startKm.toLocaleString('es-ES');
-            document.getElementById('active-start-time').textContent = visit.startTimeFormatted;
-            document.getElementById('active-start-date').textContent = visit.startDateFormatted;
-            document.getElementById('active-start-photo-thumb').src = visit.startPhoto;
-
-            // Restaurar datos de cierre si el usuario ya había avanzado algo antes de recargar
-            const endKmInput = document.getElementById('end-km');
-            endKmInput.min = visit.startKm;
-            if (visit.endKm !== null && visit.endKm !== undefined) {
-                endKmInput.value = visit.endKm;
-            } else {
-                endKmInput.value = '';
-            }
-
-            if (visit.endPhoto) {
-                tempEndPhotoBase64 = visit.endPhoto;
-                document.getElementById('end-photo-preview').src = visit.endPhoto;
-                document.getElementById('end-photo-preview-box').classList.remove('hidden');
-                document.getElementById('btn-trigger-end-photo').classList.add('hidden');
-            } else {
-                tempEndPhotoBase64 = null;
-                document.getElementById('end-photo-preview-box').classList.add('hidden');
-                document.getElementById('btn-trigger-end-photo').classList.remove('hidden');
-            }
-
-            toggleConfirmReset(false);
-            calculateDistanceLive();
-        }
-
-        /**
-         * Realiza la resta (Kilometraje Final - Kilometraje Inicial) en tiempo real
-         */
-        function calculateDistanceLive() {
-            const activeVisit = getActiveVisit();
-            if (!activeVisit) return null;
-
-            const endKmRaw = document.getElementById('end-km').value;
-            const errorEl = document.getElementById('end-km-error');
-            const totalDisplay = document.getElementById('total-distance-display');
-            const formulaText = document.getElementById('calc-formula-text');
-
-            if (endKmRaw === '') {
-                errorEl.classList.add('hidden');
-                totalDisplay.textContent = '0.0';
-                formulaText.textContent = `Inicial: ${activeVisit.startKm} km — Ingresa km final`;
-                return null;
-            }
-
-            const endKm = parseFloat(endKmRaw);
-            if (isNaN(endKm) || endKm < activeVisit.startKm) {
-                errorEl.classList.remove('hidden');
-                totalDisplay.textContent = '---';
-                totalDisplay.classList.replace('text-emerald-400', 'text-rose-400');
-                formulaText.textContent = `Debe ser ≥ ${activeVisit.startKm} km`;
-                return null;
-            }
-
-            // Cálculo exacto evitando errores de punto flotante
-            const diff = Math.round((endKm - activeVisit.startKm) * 10) / 10;
-
-            errorEl.classList.add('hidden');
-            totalDisplay.classList.replace('text-rose-400', 'text-emerald-400');
-            totalDisplay.textContent = diff.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-            formulaText.textContent = `${endKm} km − ${activeVisit.startKm} km = ${diff} km`;
-
-            // Persistir km final en localStorage
-            activeVisit.endKm = endKm;
-            localStorage.setItem(STORAGE_KEYS.ACTIVE_VISIT, JSON.stringify(activeVisit));
-
-            return {
-                startKm: activeVisit.startKm,
-                endKm: endKm,
-                totalKm: diff
-            };
-        }
-
-        /**
-         * Valida todos los datos antes de generar el correo/compartir
-         */
-        function validateCompletionData() {
-            const activeVisit = getActiveVisit();
-            if (!activeVisit) {
-                showToast('No hay ninguna visita activa.', 'error');
-                return null;
-            }
-
-            const calc = calculateDistanceLive();
-            if (!calc) {
-                showToast('Ingresa un kilometraje final válido (mayor o igual al inicial).', 'error');
-                document.getElementById('end-km').focus();
-                return null;
-            }
-
-            const endPhoto = tempEndPhotoBase64 || activeVisit.endPhoto;
-            if (!endPhoto) {
-                showToast('Toma o selecciona la foto del tablero final.', 'error');
-                return null;
-            }
-
-            const email = localStorage.getItem(STORAGE_KEYS.EMAIL);
-            const now = new Date();
-
-            return {
-                email,
-                visit: activeVisit,
-                startKm: calc.startKm,
-                endKm: calc.endKm,
-                totalKm: calc.totalKm,
-                startPhoto: activeVisit.startPhoto,
-                endPhoto: endPhoto,
-                endDateFormatted: formatDate(now),
-                endTimeFormatted: formatTime(now)
-            };
-        }
-
-        /**
-         * Construye el asunto y cuerpo del reporte
-         */
-        function buildReportText(data) {
-            const subject = `Reporte de Visita y Kilometraje (${data.totalKm} km) - ${data.visit.startDateFormatted}`;
-            const body = [
-                `REPORTE DE VISITA Y KILOMETRAJE`,
-                `====================================`,
-                `Destinatario: ${data.email}`,
-                `Razón de la visita: ${data.visit.reason}`,
-                ``,
-                `DETALLE DEL RECORRIDO:`,
-                `• Kilometraje Inicial: ${data.startKm} km (${data.visit.startDateFormatted} ${data.visit.startTimeFormatted})`,
-                `• Kilometraje Final:   ${data.endKm} km (${data.endDateFormatted} ${data.endTimeFormatted})`,
-                `• Total Recorrido:     ${data.totalKm} km (${data.endKm} - ${data.startKm})`,
-                ``,
-                `Se adjuntan las 2 fotografías de respaldo (tablero inicial y tablero final).`
-            ].join('\n');
-
-            return { subject, body };
-        }
-
-        /**
-         * OPCIÓN 1 (PRINCIPAL): Web Share API con archivos adjuntos (las 2 fotos)
-         */
-        async function handleShareReport() {
-            const data = validateCompletionData();
-            if (!data) return;
-
-            const { subject, body } = buildReportText(data);
-
-            try {
-                // Convertir ambas imágenes Base64 a objetos File reales
-                const fileStart = base64ToFile(data.startPhoto, '1_inicio_tablero.jpg');
-                const fileEnd = base64ToFile(data.endPhoto, '2_final_tablero.jpg');
-                const filesArray = [fileStart, fileEnd];
-
-                // Verificar si el dispositivo/navegador soporta compartir archivos
-                if (navigator.canShare && navigator.canShare({ files: filesArray })) {
-                    await navigator.share({
-                        title: subject,
-                        text: `Para: ${data.email}\n\n${body}`,
-                        files: filesArray
-                    });
-                    showToast('Reporte y fotografías listos en tu app seleccionada.', 'success');
-                } else {
-                    showToast('Tu navegador no soporta adjuntar fotos directamente. Usando respaldo mailto + descarga...', 'info');
-                    setTimeout(() => handleMailtoFallback(), 900);
-                }
-            } catch (err) {
-                if (err.name === 'AbortError') {
-                    // El usuario cerró el menú compartir manualmente
-                    return;
-                }
-                console.error('Error en Web Share:', err);
-                showToast('No se pudo abrir el menú compartir. Usa el botón de correo + descarga.', 'error');
-            }
-        }
-
-        /**
-         * OPCIÓN 2 (RESPALDO): Descarga las 2 fotografías y abre mailto: prellenado
-         */
-        function handleMailtoFallback() {
-            const data = validateCompletionData();
-            if (!data) return;
-
-            const { subject, body } = buildReportText(data);
-
-            // 1. Descargar ambas fotografías en el teléfono
-            downloadBase64Image(data.startPhoto, '1_inicio_tablero.jpg');
-            setTimeout(() => {
-                downloadBase64Image(data.endPhoto, '2_final_tablero.jpg');
-            }, 400);
-
-            showToast('Descargando las 2 fotos y abriendo tu correo...', 'success');
-
-            // 2. Abrir cliente de correo con mailto:
-            setTimeout(() => {
-                const mailtoUrl = `mailto:${encodeURIComponent(data.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                window.location.href = mailtoUrl;
-            }, 850);
-        }
-
-        /**
-         * Archiva la visita finalizada en el historial y limpia el estado activo para una nueva visita
-         */
-        function archiveAndResetVisit() {
-            const activeVisit = getActiveVisit();
-            if (activeVisit) {
-                try {
-                    const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
-                    // Guardamos resumen en historial sin las fotos pesadas para no saturar localStorage
-                    history.unshift({
-                        id: activeVisit.id,
-                        reason: activeVisit.reason,
-                        startKm: activeVisit.startKm,
-                        endKm: activeVisit.endKm,
-                        date: activeVisit.startDateFormatted,
-                        closedAt: new Date().toISOString()
-                    });
-                    localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history.slice(0, 30)));
-                } catch (e) {
-                    console.warn('No se pudo guardar historial:', e);
-                }
-            }
-
-            localStorage.removeItem(STORAGE_KEYS.ACTIVE_VISIT);
-            tempStartPhotoBase64 = null;
-            tempEndPhotoBase64 = null;
-            document.getElementById('end-photo-input').value = '';
-            document.getElementById('start-photo-input').value = '';
-
-            showToast('Visita archivada. Lista para iniciar una nueva.', 'success');
-            showView('view-start-visit');
-        }
-
-        /* ========================================================= */
-        /* UTILIDADES DE IMAGEN, FECHA, MODALES Y NOTIFICACIONES     */
-        /* ========================================================= */
-
-        /**
-         * Comprime una imagen desde un <input type="file"> usando Canvas
-         * Garantiza que quepa sin problemas en el límite de ~5MB de localStorage
-         */
-        function compressImageToBase64(file, maxDimension = 1024, quality = 0.72) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height) {
-                            if (width > maxDimension) {
-                                height = Math.round((height * maxDimension) / width);
-                                width = maxDimension;
-                            }
-                        } else {
-                            if (height > maxDimension) {
-                                width = Math.round((width * maxDimension) / height);
-                                height = maxDimension;
-                            }
-                        }
-
-                        const canvas = document.createElement('canvas');
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
-                        resolve(compressedDataUrl);
-                    };
-                    img.onerror = reject;
-                    img.src = event.target.result;
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        /**
-         * Convierte una cadena DataURL Base64 en un objeto File para navigator.share
-         */
-        function base64ToFile(dataUrl, filename) {
-            const arr = dataUrl.split(',');
-            const mimeMatch = arr[0].match(/:(.*?);/);
-            const mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            while (n--) {
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-            return new File([u8arr], filename, { type: mime });
-        }
-
-        /**
-         * Descarga una imagen Base64 al almacenamiento del celular
-         */
-        function downloadBase64Image(dataUrl, filename) {
-            const link = document.createElement('a');
-            link.href = dataUrl;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function getActiveVisit() {
-            const raw = localStorage.getItem(STORAGE_KEYS.ACTIVE_VISIT);
-            return raw ? JSON.parse(raw) : null;
-        }
-
-        function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function formatDate(dateObj) {
-            return dateObj.toLocaleDateString('es-ES', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
-        }
-
-        function formatTime(dateObj) {
-            return dateObj.toLocaleTimeString('es-ES', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-
-        // Controles de Modales
-        function openEmailModal() {
-            const currentEmail = localStorage.getItem(STORAGE_KEYS.EMAIL) || '';
-            document.getElementById('input-modal-email').value = currentEmail;
-            document.getElementById('modal-edit-email').classList.remove('hidden');
-        }
-
-        function closeEmailModal() {
-            document.getElementById('modal-edit-email').classList.add('hidden');
-        }
-
-        function openImageViewer(type) {
-            const activeVisit = getActiveVisit();
-            if (!activeVisit) return;
-            const imgEl = document.getElementById('viewer-img');
-            const titleEl = document.getElementById('viewer-title');
-
-            if (type === 'start') {
-                imgEl.src = activeVisit.startPhoto;
-                titleEl.textContent = `Tablero Inicial (${activeVisit.startKm} km)`;
-            }
-            document.getElementById('modal-image-viewer').classList.remove('hidden');
-        }
-
-        function closeImageViewer() {
-            document.getElementById('modal-image-viewer').classList.add('hidden');
-        }
-
-        function toggleConfirmReset(show) {
-            const box = document.getElementById('confirm-reset-box');
-            const btn = document.getElementById('btn-new-visit-prompt');
-            if (show) {
-                box.classList.remove('hidden');
-                btn.classList.add('hidden');
-            } else {
-                box.classList.add('hidden');
-                btn.classList.remove('hidden');
-            }
-        }
-
-        /**
-         * Muestra notificaciones visuales amigables (sin alert)
-         */
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-
-            const styles = {
-                success: 'bg-emerald-900/95 text-white border-emerald-500/40',
-                error: 'bg-rose-900/95 text-white border-rose-500/40',
-                info: 'bg-slate-900/95 text-white border-blue-400/30'
-            };
-
-            const icons = {
-                success: 'fa-circle-check text-emerald-400',
-                error: 'fa-triangle-exclamation text-rose-400',
-                info: 'fa-circle-info text-blue-400'
-            };
-
-            toast.className = `${styles[type] || styles.info} border backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 opacity-0 translate-y-2`;
-            toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} text-sm shrink-0"></i><span>${message}</span>`;
-
-            container.appendChild(toast);
-
-            requestAnimationFrame(() => {
-                toast.classList.remove('opacity-0', 'translate-y-2');
-            });
-
-            setTimeout(() => {
-                toast.classList.add('opacity-0', '-translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 3400);
-        }
-    </script>
+      }
+
+      window.location.href = `mailto:${encodeURIComponent(targetEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function resetPhotoBox(prefix) {
+      document.getElementById(`${prefix}PhotoPreview`).classList.add('hidden');
+      document.getElementById(`${prefix}PhotoPlaceholder`).classList.remove('hidden');
+      document.getElementById(`${prefix}PhotoHint`).classList.add('hidden');
+      document.getElementById(`${prefix}PhotoBox`).classList.remove('has-photo');
+    }
+
+    function renderVisitState() {
+      const active = JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIVE) || 'null');
+      const cardStart = document.getElementById('cardStartVisit');
+      const cardActive = document.getElementById('cardActiveVisit');
+      const cardDone = document.getElementById('cardCompletedVisit');
+
+      cardStart.classList.add('hidden');
+      cardActive.classList.add('hidden');
+      cardDone.classList.add('hidden');
+
+      if (active) {
+        document.getElementById('activeReason').textContent = active.reason;
+        document.getElementById('activeStartKm').textContent = `${active.startKm} km`;
+        document.getElementById('activeStartTime').textContent = formatDate(active.startTime);
+        document.getElementById('activeStartImg').src = active.startPhoto;
+        document.getElementById('liveDistance').textContent = '0.0 km';
+        cardActive.classList.remove('hidden');
+      } else if (lastCompletedRecord) {
+        document.getElementById('doneDistance').textContent = `${lastCompletedRecord.distance} km`;
+        document.getElementById('doneReason').textContent = lastCompletedRecord.reason;
+        document.getElementById('doneStartKm').textContent = `${lastCompletedRecord.startKm} km`;
+        document.getElementById('doneEndKm').textContent = `${lastCompletedRecord.endKm} km`;
+        document.getElementById('doneStartImg').src = lastCompletedRecord.startPhoto;
+        document.getElementById('doneEndImg').src = lastCompletedRecord.endPhoto;
+        cardDone.classList.remove('hidden');
+      } else {
+        cardStart.classList.remove('hidden');
+      }
+    }
+
+    // Historial
+    function renderHistory() {
+      const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+      const listEl = document.getElementById('historyList');
+      const totalKm = history.reduce((acc, item) => acc + (Number(item.distance) || 0), 0);
+
+      document.getElementById('histTotalCount').textContent = history.length;
+      document.getElementById('histTotalKm').textContent = `${totalKm.toFixed(1)} km`;
+
+      if (history.length === 0) {
+        listEl.innerHTML = `
+          <div class="card" style="text-align:center;color:var(--muted);padding:32px 16px;">
+            Aún no tienes recorridos finalizados en el historial.
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = history.map(item => `
+        <div class="history-item" data-id="${item.id}">
+          <div class="history-top">
+            <div class="history-reason">${escapeHtml(item.reason)}</div>
+            <div class="history-km">+${item.distance} km</div>
+          </div>
+          <div class="history-meta">
+            <span>${formatDate(item.endTime)}</span>
+            <span>${item.startKm} → ${item.endKm} km</span>
+          </div>
+        </div>
+      `).join('');
+
+      listEl.querySelectorAll('.history-item').forEach(el => {
+        el.addEventListener('click', () => openHistoryDetail(el.dataset.id));
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    function openHistoryDetail(id) {
+      const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+      const item = history.find(x => x.id === id);
+      if (!item) return;
+
+      selectedHistoryId = id;
+      document.getElementById('detDistance').textContent = `${item.distance} km`;
+      document.getElementById('detReason').textContent = item.reason;
+      document.getElementById('detStartKm').textContent = `${item.startKm} km`;
+      document.getElementById('detEndKm').textContent = `${item.endKm} km`;
+      document.getElementById('detStartTime').textContent = formatDate(item.startTime);
+      document.getElementById('detEndTime').textContent = formatDate(item.endTime);
+      document.getElementById('detStartImg').src = item.startPhoto;
+      document.getElementById('detEndImg').src = item.endPhoto;
+
+      document.getElementById('detailModal').classList.add('open');
+    }
+
+    document.getElementById('btnCloseDetail').addEventListener('click', () => {
+      document.getElementById('detailModal').classList.remove('open');
+    });
+
+    document.getElementById('btnShareHistoryItem').addEventListener('click', () => {
+      const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+      const item = history.find(x => x.id === selectedHistoryId);
+      if (item) shareVisitReport(item);
+    });
+
+    document.getElementById('btnDeleteHistoryItem').addEventListener('click', () => {
+      if (!selectedHistoryId) return;
+      if (!confirm('¿Eliminar este recorrido del historial?')) return;
+      let history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+      history = history.filter(x => x.id !== selectedHistoryId);
+      localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+      document.getElementById('detailModal').classList.remove('open');
+      renderHistory();
+      showToast('Registro eliminado');
+    });
+
+    document.getElementById('btnExportCsv').addEventListener('click', () => {
+      const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+      if (history.length === 0) {
+        showToast('No hay registros para exportar');
+        return;
+      }
+      const headers = ['Fecha Inicio', 'Fecha Cierre', 'Razon', 'Km Inicial', 'Km Final', 'Recorrido (km)', 'Correo Destino'];
+      const rows = history.map(h => [
+        `"${formatDate(h.startTime)}"`,
+        `"${formatDate(h.endTime)}"`,
+        `"${h.reason.replace(/"/g, '""')}"`,
+        h.startKm,
+        h.endKm,
+        h.distance,
+        `"${getTargetEmail() || h.targetEmail || ''}"`
+      ].join(','));
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `historial_kilometraje_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Navegación entre pestañas
+    document.getElementById('navVisit').addEventListener('click', () => {
+      document.getElementById('navVisit').classList.add('active');
+      document.getElementById('navHistory').classList.remove('active');
+      document.getElementById('viewVisit').classList.remove('hidden');
+      document.getElementById('viewHistory').classList.add('hidden');
+      renderVisitState();
+    });
+
+    document.getElementById('navHistory').addEventListener('click', () => {
+      document.getElementById('navHistory').classList.add('active');
+      document.getElementById('navVisit').classList.remove('active');
+      document.getElementById('viewHistory').classList.remove('hidden');
+      document.getElementById('viewVisit').classList.add('hidden');
+      renderHistory();
+    });
+
+    // Inicialización
+    updateEmailUI();
+    renderVisitState();
+  </script>
 </body>
 </html>
